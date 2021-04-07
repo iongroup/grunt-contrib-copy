@@ -27,12 +27,6 @@ module.exports = function(grunt) {
       mode: false
     });
 
-    var copyOptions = {
-      encoding: options.encoding,
-      process: options.process || options.processContent,
-      noProcess: options.noProcess || options.processContentExclude
-    };
-
     var detectDestType = function(dest) {
       if (grunt.util._.endsWith(dest, '/')) {
         return 'directory';
@@ -73,7 +67,17 @@ module.exports = function(grunt) {
 
     this.files.forEach(function(filePair) {
       isExpandedPair = filePair.orig.expand || false;
+      var copyOptions = {
+        encoding: filePair.orig.encoding || options.encoding,
+        process: filePair.orig.process || options.process || options.processContent,
+        noProcess: filePair.orig.noProcess || options.noProcess || options.processContentExclude,
+      };
 
+      var skip = typeof filePair.orig.skip === "boolean" ? filePair.orig.skip : (typeof filePair.orig.skip === "function" ? filePair.orig.skip() : false)
+      if (skip) {
+        return;
+      }
+      
       filePair.src.forEach(function(src) {
         src = unixifyPath(src);
         var dest = unixifyPath(filePair.dest);

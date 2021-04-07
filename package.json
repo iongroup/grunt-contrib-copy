@@ -1,7 +1,7 @@
 {
   "name": "grunt-contrib-copy",
   "description": "Copy files and folders",
-  "version": "1.0.0",
+  "version": "1.0.0-ion1",
   "author": {
     "name": "Grunt Team",
     "url": "http://gruntjs.com/"
